@@ -4,7 +4,6 @@
 docker run -it python:3.12.8 bash
 pip --version
 ```
-```
 
 ## Question 2. Understanding Docker networking and docker-compose
 db:5432
