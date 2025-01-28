@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=kestra
+    volumes:
+      - ./kestra:/var/lib/postgresql/data:rw
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "8000:80"
+  kestra:
+    image: kestra/kestra:latest
+    # Note that this is meant for development only. Refer to the documentation for production deployments of Kestra which runs without a root user.
+    user: "root"
+    command: server standalone --worker-thread=128 --config /etc/config/application.yaml
+    volumes:
+      - ./kestra-data:/app/storage
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/kestra-wd:/tmp/kestra-wd
+      - $PWD/application.yaml:/etc/config/application.yaml
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - postgres
