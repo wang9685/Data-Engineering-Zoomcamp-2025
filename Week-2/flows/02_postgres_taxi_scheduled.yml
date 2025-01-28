@@ -1,0 +1,48 @@
+id: 02_postgres_taxi_scheduled
+namespace: zoomcamp
+description: |
+  The CSV Data used in the course: https://github.com/DataTalksClub/nyc-tlc-data/releases
+
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Select taxi type
+    values: [yellow, green]
+    defaults: yellow
+
+
+tasks:
+  - id: year_month_combinations
+    type: "io.kestra.plugin.scripts.python.Script"
+    description: "Generate year-month combinations"
+    script: |
+      from kestra import Kestra
+      year_month = []
+      years = ['2019', '2020', '2021']
+      for year in years:
+        if year != '2021':
+          for month in range(1, 13):
+            year_month.append(f'{year}-{str(month).zfill(2)}')
+        else:
+          for month in range(1, 8):
+            year_month.append(f'{year}-{str(month).zfill(2)}')
+      Kestra.outputs({'year_month': year_month})
+    beforeCommands:
+    - pip install requests kestra
+    
+  - id: for_each_month
+    type: "io.kestra.plugin.core.flow.ForEach"
+    description: "Loop through year-month pairs"
+    values: "{{ outputs.year_month_combinations['vars']['year_month'] }}"
+    concurrencyLimit: 1
+    tasks:
+      - id: subflow
+        type: io.kestra.plugin.core.flow.Subflow
+        flowId: subflow
+        namespace: zoomcamp
+        inputs:
+          taxi: "{{ inputs.taxi }}"
+          year_month: "{{ taskrun.value }}"
+        wait: true
+
+
