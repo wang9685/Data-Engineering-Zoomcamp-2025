@@ -1,13 +1,13 @@
 # Week-2
 ## Run kestra via Docker
-### 1. Run containers
+#### 1. Run containers
 ```bash
 docker compose up
 ```
-### 2. Connect to localhost:8080
-### 3. Use the files in flows folder to create ETL pipeline
-### 4. Select one taxi typ and execute 02_postgres_taxi_scheduled.yml
-#### 4.1 This flow executes subflow.yml for each month
+#### 2. Connect to localhost:8080
+#### 3. Use the files in flows folder to create ETL pipeline
+#### 4. Select one taxi typ and execute 02_postgres_taxi_scheduled.yml
+##### 4.1 This flow executes subflow.yml for each month
 ## Homework
 ### Question 3. How many rows are there for the Yellow Taxi data for all CSV files in the year 2020?
 ```sql
