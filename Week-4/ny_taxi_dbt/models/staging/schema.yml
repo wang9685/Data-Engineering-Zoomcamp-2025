@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: staging
+    database: nth-rarity-448303-k8
+    schema: zoomcamp_week4
+      # loaded_at_field: record_loaded_at
+    tables:
+      - name: green_tripdata
+      - name: yellow_tripdata
+         # freshness:
+           # error_after: {count: 6, period: hour}
