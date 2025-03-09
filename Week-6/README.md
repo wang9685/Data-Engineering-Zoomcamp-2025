@@ -1,5 +1,8 @@
 # Week-6 Homework
-## Write the most popular destination, your answer should be either the zone ID or the zone name of this destination.
+## Q6. 
+### DataFrame[lpep_pickup_datetime: string, lpep_dropoff_datetime: string, PULocationID: int, DOLocationID: int, passenger_count: double, trip_distance: double, tip_amount: double]
+
+## Q7. Write the most popular destination, your answer should be either the zone ID or the zone name of this destination.
 ```Python
 df = green_stream.withColumn('timestamp', F.current_timestamp())
 df = df.withWatermark("timestamp", "10 minutes")
